@@ -1,22 +1,26 @@
 from pathlib import Path
 
+from app.config import config as Config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-_-q)-%5ubzjhqng^m4ewm0-fnx!hlzo0^x1w1wph12^)d0azrc"
+SECRET_KEY = Config.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = Config.ENVIRONMENT.is_debug
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = Config.ALLOWED_HOSTS
 
 # Application definition
+
+LOCAL_APPS = ["accounts"]
+
+INSTALLED_APPS = [
+    "rest_framework",
+    "drf_spectacular",
+    # "django-debug-toolbar"
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -25,6 +29,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    *INSTALLED_APPS,
+    *LOCAL_APPS,
 ]
 
 MIDDLEWARE = [
@@ -56,14 +62,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "app.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": Config.DB_ENGINE,
+        "NAME": Config.DB_NAME,
+        "USER": Config.DB_USER,
+        "PASSWORD": Config.DB_PASSWORD,
+        "HOST": Config.DB_HOST,
+        "PORT": Config.DB_PORT,
     }
 }
 
@@ -108,3 +114,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "accounts.User"
