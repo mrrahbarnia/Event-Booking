@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import timedelta
 
 from app.config import config as Config
 
@@ -19,6 +20,8 @@ LOCAL_APPS = ["accounts"]
 INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     # "django-debug-toolbar"
 ]
 
@@ -116,3 +119,22 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
+
+# Rest framework configuration
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+# Simple JWT configuration
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=Config.ACCESS_TOKEN_LIFE_TIME_MIN),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=Config.REFRESH_TOKEN_LIFE_TIME_DAY),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": True,
+    "ALGORITHM": Config.JWT_ALGORITHM,
+    "SIGNING_KEY": Config.SECRET_KEY,
+}

@@ -7,13 +7,22 @@ from django.core.exceptions import ValidationError
 
 from accounts.managers import CustomUserManager
 from accounts.config import config as Config
+from accounts.types import UserRole
+
+
+ROLE_CHOICES = [
+    ("CUSTOMER", "CUSTOMER"),
+    ("ADMIN", "ADMIN"),
+    ("SELLER", "SELLER"),
+]
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(unique=True)
+    full_name = models.CharField(max_length=250)
+    role = models.CharField(choices=ROLE_CHOICES, default=UserRole.CUSTOMER)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-
     registered_at = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = "phone_number"
