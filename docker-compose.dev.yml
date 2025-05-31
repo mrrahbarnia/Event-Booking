@@ -44,19 +44,19 @@ services:
     networks:
       - app-net
 
-  # redis:
-  #   image: redis:7.2-alpine
-  #   container_name: redis
-  #   ports:
-  #     - "6379:6379"
-  #   volumes:
-  #     - redis-volume:/data
-  #   networks:
-  #     - app-net
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-volume:/data
+    networks:
+      - app-net
 
 name: event-booking
 volumes:
   devdb-volume:
-  # redis-volume:
+  redis-volume:
 networks:
   app-net:

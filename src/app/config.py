@@ -23,6 +23,7 @@ class Config(BaseSettings):
     DB_NAME: str
     DB_PORT: int
     DB_HOST: str
+    REDIS_URL: str
     ACCESS_TOKEN_LIFE_TIME_MIN: int
     REFRESH_TOKEN_LIFE_TIME_DAY: int
     JWT_ALGORITHM: str

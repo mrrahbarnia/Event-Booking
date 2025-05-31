@@ -19,10 +19,13 @@ ROLE_CHOICES = [
 
 class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(unique=True)
+    password = models.CharField(max_length=128, blank=True)
     full_name = models.CharField(max_length=250)
-    role = models.CharField(choices=ROLE_CHOICES, default=UserRole.CUSTOMER)
+    role = models.CharField(
+        choices=ROLE_CHOICES, default=UserRole.CUSTOMER.name.upper()
+    )
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     registered_at = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = "phone_number"

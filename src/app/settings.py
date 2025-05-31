@@ -147,3 +147,14 @@ SIMPLE_JWT = {
     "ALGORITHM": Config.JWT_ALGORITHM,
     "SIGNING_KEY": Config.SECRET_KEY,
 }
+
+# Redis config
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": Config.REDIS_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
