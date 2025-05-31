@@ -16,6 +16,7 @@ class Config(BaseSettings):
     ENVIRONMENT: Environment = Environment.PRODUCTION
     SECRET_KEY: str = "test"
     ALLOWED_HOSTS: list[str]
+    DEFAULT_DB: str
     DB_ENGINE: str
     DB_PASSWORD: str
     DB_USER: str

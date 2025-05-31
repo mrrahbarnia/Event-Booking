@@ -3,5 +3,5 @@ from django.urls import path
 from accounts import apis
 
 urlpatterns = [
-    path("health-check/", apis.HealthCheckAPI.as_view(), name="health_check"),
+    path("login/", apis.LoginAPI.as_view(), name="login"),
 ]

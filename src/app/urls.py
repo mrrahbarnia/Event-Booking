@@ -5,6 +5,8 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+from app.config import config as Config
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     # API endpoints
@@ -17,3 +19,6 @@ urlpatterns = [
     # Accounts app URLs
     path("accounts/", include("accounts.urls")),
 ]
+
+if Config.ENVIRONMENT.is_debug:
+    urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]

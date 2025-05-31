@@ -1,21 +1,29 @@
-from typing import Any
+from typing import Any, Literal
 
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser
 
 from accounts.types import UserRole
+from accounts.config import config as Config
 
 
 class CustomUserManager(BaseUserManager):
     def create_user(
-        self, phone_number: str, password: str, **extra_fields: Any
+        self,
+        phone_number: str,
+        password: str,
+        user_type: Literal["super_user", "normal_user"] = "normal_user",
+        **extra_fields: Any,
     ) -> AbstractBaseUser:
         if not phone_number:
             raise ValueError("The Phone Number field must be set")
         if len(phone_number) != 11:
             raise ValueError("The Phone Number must be 11 digits long")
         user: AbstractBaseUser = self.model(phone_number=phone_number, **extra_fields)
-        user.set_password(password)
+        if user_type == "normal_user":
+            user.set_unusable_password()
+        elif user_type == "super_user":
+            user.set_password(Config.ADMIN_PANNEL_PASSWD)
         user.save()
         return user
 

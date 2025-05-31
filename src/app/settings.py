@@ -1,3 +1,4 @@
+import socket
 from pathlib import Path
 from datetime import timedelta
 
@@ -22,8 +23,8 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    # "django-debug-toolbar"
 ]
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
     *LOCAL_APPS,
 ]
 
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -45,6 +47,13 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# Development third parties.
+if Config.ENVIRONMENT.is_debug:
+    # Django silk config
+    INSTALLED_APPS.extend(["silk"])
+    MIDDLEWARE.extend(["silk.middleware.SilkyMiddleware"])
+
 
 ROOT_URLCONF = "app.urls"
 
@@ -66,7 +75,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "app.wsgi.application"
 
 DATABASES = {
-    "default": {
+    Config.DEFAULT_DB: {
         "ENGINE": Config.DB_ENGINE,
         "NAME": Config.DB_NAME,
         "USER": Config.DB_USER,
