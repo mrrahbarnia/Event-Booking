@@ -9,9 +9,7 @@ class PostgresRepository:
 
     def create_user(self, phone_number: str, full_name: str) -> None:
         """Create a new user in the database."""
-        user = User.objects.using(self._db_alias).create(
-            phone_number=phone_number, full_name=full_name
-        )
+        user = User(phone_number=phone_number, full_name=full_name)
         user.full_clean()
         user.save(using=self._db_alias)
 
@@ -20,4 +18,4 @@ class PostgresRepository:
         try:
             return User.objects.using(self._db_alias).get(phone_number=phone_number)
         except User.DoesNotExist:
-            exceptions.WrongPhoneNumberExc
+            raise exceptions.WrongPhoneNumberExc

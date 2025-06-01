@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 
+from accounts import validators
 from accounts.services import new_account_service
 
 
@@ -18,8 +19,7 @@ class LoginAPI(APIView):
         phone_number = serializers.CharField(required=True)
 
         def validate_phone_number(self, value: str) -> str:
-            if len(value) != 11:
-                raise serializers.ValidationError("Phone number must be 11 digits long")
+            validators.validate_phone_number(value)
             return value
 
     @extend_schema(
@@ -49,8 +49,7 @@ class RegisterAPI(APIView):
         full_name = serializers.CharField(max_length=250, required=True)
 
         def validate_phone_number(self, value: str) -> str:
-            if len(value) != 11:
-                raise serializers.ValidationError("Phone number must be 11 digits long")
+            validators.validate_phone_number(value)
             return value
 
     @extend_schema(

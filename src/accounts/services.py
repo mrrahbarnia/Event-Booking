@@ -1,9 +1,7 @@
-from functools import lru_cache
-
 from django.core.cache import cache
 
 from accounts import exceptions
-from accounts.utils import generate_random_code, send_sms, generate_jwt_tokens
+from accounts.utils import generate_random_code, send_message, generate_jwt_tokens
 from accounts.config import config as Config
 from accounts.types import TokenDict
 from repositories.repository import RepositoryInterface
@@ -18,8 +16,8 @@ class AccountService:
         self._repository.get_user_by_phone_number(phone_number)
         otp = generate_random_code()
         cache.set(otp, phone_number, Config.OTP_LIFETIME_SEC)
-        # TODO: Sending OTP via SMS
-        send_sms(phone_number, otp)
+        # TODO: Sending OTP via Message
+        send_message(phone_number, otp)
 
     def verify_otp(self, *, otp: str) -> TokenDict:
         cached_otp = cache.get(otp)  # phone_number
@@ -34,11 +32,10 @@ class AccountService:
         otp = generate_random_code()
         self._repository.create_user(phone_number, full_name)
         cache.set(otp, phone_number, Config.OTP_LIFETIME_SEC)
-        # TODO: Sending OTP via SMS
-        send_sms(phone_number, otp)
+        # TODO: Sending OTP via Message
+        send_message(phone_number, otp)
 
 
-@lru_cache
 def new_account_service(repo: RepositoryInterface | None = None) -> AccountService:
     """
     Factory function to create a new instance

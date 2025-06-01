@@ -10,8 +10,8 @@ def generate_random_code(length: int = 6) -> str:
     return "".join(random.choices("0123456789", k=length))
 
 
-def send_sms(phone_number: str, message: str) -> None:
-    print(f"Sending SMS to {phone_number}: {message}")
+def send_message(phone_number: str, message: str) -> None:
+    print(f"Sending message to {phone_number}: {message}")
 
 
 def generate_jwt_tokens(user: User) -> TokenDict:
