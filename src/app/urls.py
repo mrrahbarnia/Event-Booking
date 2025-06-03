@@ -18,6 +18,8 @@ urlpatterns = [
     ),
     # Accounts app URLs
     path("accounts/", include("accounts.urls")),
+    # Admin panel URLs
+    path("admin_panel/", include("admin_panel.urls")),
 ]
 
 if Config.ENVIRONMENT.is_debug:

@@ -5,7 +5,6 @@ from accounts.utils import generate_random_code, send_message, generate_jwt_toke
 from accounts.config import config as Config
 from accounts.types import TokenDict
 from repositories.repository import RepositoryInterface
-from repositories.pg_repository import PostgresRepository
 
 
 class AccountService:
@@ -36,9 +35,9 @@ class AccountService:
         send_message(phone_number, otp)
 
 
-def new_account_service(repo: RepositoryInterface | None = None) -> AccountService:
+def new_account_service(repo: RepositoryInterface) -> AccountService:
     """
     Factory function to create a new instance
     of AccountService and passing repository to it.
     """
-    return AccountService(repo or PostgresRepository())
+    return AccountService(repo)

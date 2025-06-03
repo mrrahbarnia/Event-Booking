@@ -6,14 +6,16 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 
+from app.config import config as Config
 from accounts import validators
 from accounts.services import new_account_service
+from repositories.pg_repository import PostgresRepository
 
 
 class LoginAPI(APIView):
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        self._service = new_account_service()
+        self._service = new_account_service(PostgresRepository(Config.DEFAULT_DB))
 
     class LoginInputSerializer(serializers.Serializer):
         phone_number = serializers.CharField(required=True)
@@ -42,7 +44,7 @@ class LoginAPI(APIView):
 class RegisterAPI(APIView):
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        self._service = new_account_service()
+        self._service = new_account_service(PostgresRepository(Config.DEFAULT_DB))
 
     class RegisterInputSerializer(serializers.Serializer):
         phone_number = serializers.CharField(required=True)
@@ -74,7 +76,7 @@ class RegisterAPI(APIView):
 class VerifyOTPAPI(APIView):
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        self._service = new_account_service()
+        self._service = new_account_service(PostgresRepository(Config.DEFAULT_DB))
 
     class VerifyOtpInputSerializer(serializers.Serializer):
         otp = serializers.CharField(required=True)

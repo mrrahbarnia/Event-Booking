@@ -16,7 +16,7 @@ ALLOWED_HOSTS = Config.ALLOWED_HOSTS
 
 # Application definition
 
-LOCAL_APPS = ["accounts"]
+LOCAL_APPS = ["accounts", "venues"]
 
 INSTALLED_APPS = [
     "rest_framework",

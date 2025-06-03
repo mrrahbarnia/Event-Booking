@@ -1,10 +1,9 @@
 from accounts import exceptions
-from app.config import config as Config
 from accounts.models import User
 
 
 class PostgresRepository:
-    def __init__(self, db_alias: str = Config.DEFAULT_DB) -> None:
+    def __init__(self, db_alias: str) -> None:
         self._db_alias = db_alias
 
     def create_user(self, phone_number: str, full_name: str) -> None:
